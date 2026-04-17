@@ -1,16 +1,22 @@
 package org.example;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-// Custom Exception
+// Custom Checked Exception
 class InvalidCapacityException extends Exception {
     public InvalidCapacityException(String message) {
         super(message);
     }
 }
 
-// Passenger Bogie class with validation
+// Custom Runtime Exception
+class CargoSafetyException extends RuntimeException {
+    public CargoSafetyException(String message) {
+        super(message);
+    }
+}
+
+// Passenger Bogie
 class Bogie {
     String name;
     int capacity;
@@ -22,21 +28,34 @@ class Bogie {
         this.name = name;
         this.capacity = capacity;
     }
-
-    @Override
-    public String toString() {
-        return name + " (Capacity: " + capacity + ")";
-    }
 }
 
-// Goods Bogie class
+// Goods Bogie
 class GoodsBogie {
     String type;
     String cargo;
 
-    GoodsBogie(String type, String cargo) {
+    GoodsBogie(String type) {
         this.type = type;
-        this.cargo = cargo;
+    }
+
+    public void assignCargo(String cargo) {
+        try {
+            if (type.equalsIgnoreCase("Rectangular") &&
+                    cargo.equalsIgnoreCase("Petroleum")) {
+                throw new CargoSafetyException(
+                        "Unsafe Cargo Assignment: Rectangular bogie cannot carry Petroleum"
+                );
+            }
+
+            this.cargo = cargo;
+            System.out.println("Cargo '" + cargo + "' assigned to " + type + " bogie.");
+
+        } catch (CargoSafetyException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            System.out.println("Cargo assignment attempt completed for " + type + " bogie.");
+        }
     }
 }
 
@@ -45,24 +64,27 @@ public class TrainConsistManagement {
 
         System.out.println("=== Train Consist Management App ===");
 
-        List<Bogie> bogieList = new ArrayList<>();
+        // UC16: Bubble Sort on Passenger Capacities
+        int[] capacities = {72, 56, 24, 70, 60};
 
-        try {
-            // Valid bogies
-            bogieList.add(new Bogie("Sleeper", 72));
-            bogieList.add(new Bogie("AC Chair", 54));
+        System.out.println("\nOriginal Capacities:");
+        System.out.println(Arrays.toString(capacities));
 
-            // Invalid bogie (will throw exception)
-            bogieList.add(new Bogie("First Class", 0));
+        // Bubble Sort Algorithm
+        int n = capacities.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
 
-        } catch (InvalidCapacityException e) {
-            System.out.println("Error: " + e.getMessage());
+                if (capacities[j] > capacities[j + 1]) {
+                    // Swap
+                    int temp = capacities[j];
+                    capacities[j] = capacities[j + 1];
+                    capacities[j + 1] = temp;
+                }
+            }
         }
 
-        // Display valid bogies only
-        System.out.println("\nValid Bogies in Train:");
-        for (Bogie b : bogieList) {
-            System.out.println(b);
-        }
+        System.out.println("\nSorted Capacities (Ascending):");
+        System.out.println(Arrays.toString(capacities));
     }
 }
