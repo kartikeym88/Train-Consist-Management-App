@@ -5,26 +5,32 @@ public class TrainConsistManagement {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // UC18: Linear Search for Bogie ID
-        String[] bogieIDs = {"BG101", "BG205", "BG309", "BG412", "BG550"};
+        // UC20: Exception Handling During Search
 
-        String searchKey = "BG309"; // change this value to test
+        String[] bogieIDs = {}; // try with empty and non-empty cases
 
+        String searchKey = "BG101";
+
+        // Fail-fast validation
+        if (bogieIDs.length == 0) {
+            throw new IllegalStateException("Cannot perform search: Train has no bogies.");
+        }
+
+        // Linear Search (can also reuse binary search)
         boolean found = false;
 
-        // Linear Search
-        for (int i = 0; i < bogieIDs.length; i++) {
-            if (bogieIDs[i].equals(searchKey)) {
+        for (String id : bogieIDs) {
+            if (id.equals(searchKey)) {
                 found = true;
-                break; // early termination
+                break;
             }
         }
 
         // Output result
         if (found) {
-            System.out.println("\nBogie ID " + searchKey + " FOUND in the train.");
+            System.out.println("\nBogie ID " + searchKey + " FOUND.");
         } else {
-            System.out.println("\nBogie ID " + searchKey + " NOT FOUND in the train.");
+            System.out.println("\nBogie ID " + searchKey + " NOT FOUND.");
         }
     }
 }
