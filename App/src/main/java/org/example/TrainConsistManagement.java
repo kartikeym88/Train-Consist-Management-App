@@ -73,22 +73,27 @@ public class TrainConsistManagement {
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 54));
         bogieList.add(new Bogie("First Class", 24));
+        bogieList.add(new Bogie("Sleeper", 70));
 
         bogieList.sort(Comparator.comparingInt(b -> b.capacity));
 
-        // UC8: Filter using Streams
-        System.out.println("\nFiltering bogies with capacity > 60...");
-
-        List<Bogie> filteredBogies = bogieList
-                .stream()
+        // UC8
+        List<Bogie> filteredBogies = bogieList.stream()
                 .filter(b -> b.capacity > 60)
                 .collect(Collectors.toList());
 
-        // Display filtered bogies
-        System.out.println("Filtered Bogies:");
-        for (Bogie b : filteredBogies) {
-            System.out.println(b);
-        }
+        // UC9
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
+
+        // UC10: Total Seating Capacity using reduce
+        System.out.println("\nCalculating total seating capacity...");
+
+        int totalCapacity = bogieList.stream()
+                .map(b -> b.capacity)
+                .reduce(0, Integer::sum);
+
+        System.out.println("Total Seating Capacity of Train: " + totalCapacity);
 
         // Verify original list unchanged
         System.out.println("\nOriginal Bogie List:");
