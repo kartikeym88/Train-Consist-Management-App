@@ -1,8 +1,9 @@
 package org.example;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
-// Bogie class for UC7
+// Bogie class
 class Bogie {
     String name;
     int capacity;
@@ -67,20 +68,36 @@ public class TrainConsistManagement {
         bogieCapacity.put("AC Chair", 54);
         bogieCapacity.put("First Class", 24);
 
-        // UC7: Sort Bogies by Capacity
-        System.out.println("\nSorting bogies by capacity...");
-
+        // UC7
         List<Bogie> bogieList = new ArrayList<>();
-
         bogieList.add(new Bogie("Sleeper", 72));
         bogieList.add(new Bogie("AC Chair", 54));
         bogieList.add(new Bogie("First Class", 24));
+        bogieList.add(new Bogie("Sleeper", 70)); // duplicate type for grouping
 
-        // Sort using Comparator (ascending order)
         bogieList.sort(Comparator.comparingInt(b -> b.capacity));
 
-        // Display sorted bogies
-        System.out.println("Bogies sorted by capacity:");
+        // UC8
+        List<Bogie> filteredBogies = bogieList.stream()
+                .filter(b -> b.capacity > 60)
+                .collect(Collectors.toList());
+
+        // UC9: Group Bogies by Type
+        System.out.println("\nGrouping bogies by type...");
+
+        Map<String, List<Bogie>> groupedBogies = bogieList.stream()
+                .collect(Collectors.groupingBy(b -> b.name));
+
+        // Display grouped bogies
+        for (Map.Entry<String, List<Bogie>> entry : groupedBogies.entrySet()) {
+            System.out.println("\nType: " + entry.getKey());
+            for (Bogie b : entry.getValue()) {
+                System.out.println("  " + b);
+            }
+        }
+
+        // Verify original list unchanged
+        System.out.println("\nOriginal Bogie List:");
         for (Bogie b : bogieList) {
             System.out.println(b);
         }
