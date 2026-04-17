@@ -26,7 +26,7 @@ public class TrainConsistManagement {
             }
         }
 
-        // Output result
+        // Step 3: Output result
         if (found) {
             System.out.println("\nBogie ID " + searchKey + " FOUND.");
         } else {
