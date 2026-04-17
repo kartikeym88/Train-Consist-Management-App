@@ -7,16 +7,43 @@ public class TrainConsistManagement {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // UC17: Sort Bogie Names using Arrays.sort()
-        String[] bogieNames = {"Sleeper", "AC Chair", "First Class", "General", "Luxury"};
+        // UC19: Binary Search for Bogie ID
 
-        System.out.println("\nOriginal Bogie Names:");
-        System.out.println(Arrays.toString(bogieNames));
+        String[] bogieIDs = {"BG309", "BG101", "BG550", "BG205", "BG412"};
 
-        // Built-in sorting
-        Arrays.sort(bogieNames);
+        String searchKey = "BG205"; // change to test
 
-        System.out.println("\nSorted Bogie Names (Alphabetical):");
-        System.out.println(Arrays.toString(bogieNames));
+        // Step 1: Sort the array (precondition for binary search)
+        Arrays.sort(bogieIDs);
+
+        System.out.println("\nSorted Bogie IDs:");
+        System.out.println(Arrays.toString(bogieIDs));
+
+        int low = 0;
+        int high = bogieIDs.length - 1;
+        boolean found = false;
+
+        // Step 2: Binary Search
+        while (low <= high) {
+            int mid = (low + high) / 2;
+
+            int comparison = bogieIDs[mid].compareTo(searchKey);
+
+            if (comparison == 0) {
+                found = true;
+                break;
+            } else if (comparison < 0) {
+                low = mid + 1; // search right half
+            } else {
+                high = mid - 1; // search left half
+            }
+        }
+
+        // Step 3: Output result
+        if (found) {
+            System.out.println("\nBogie ID " + searchKey + " FOUND using Binary Search.");
+        } else {
+            System.out.println("\nBogie ID " + searchKey + " NOT FOUND.");
+        }
     }
 }
